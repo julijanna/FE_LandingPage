@@ -24,6 +24,7 @@ const sectionList = document.getElementsByTagName("section");
 let listText = "";
 let activeElement = sectionList[0];
 let isScrolling;
+let menuLinks;
 
 /**
  * End Global Variables
@@ -89,14 +90,14 @@ function getNearestSection(yScroll, sections) {
 
 function createList(elementData, elementId, text) {
   text +=
-    "<li class=li__" +
+    '<li class="li__section" id="li__' +
     elementId +
-    " >" +
-    "<a href=#" +
-    elementId +
-    ">" +
+    '">' +
+    // "<a href=#" +
+    // elementId +
+    // ">" +
     elementData +
-    "</a></li>";
+    "</li>";
   return text;
 }
 
@@ -116,6 +117,22 @@ function setAsActive(element) {
 }
 
 // Scroll to anchor ID using scrollTO event
+
+/**
+ * @description Scrolls to given element
+ * @param {object} element - Element which it should be scrolled to
+ */
+
+function scrollToSection(element) {
+  let targetContainer = document.querySelector(
+    "[data-nav = '" + element.textContent + "']"
+  );
+  window.scrollTo({
+    left: targetContainer.offsetLeft,
+    top: targetContainer.offsetTop,
+    behavior: "smooth",
+  });
+}
 
 // add event listener on scroll and set active section
 
@@ -144,6 +161,20 @@ menuIcon.addEventListener("click", function () {
 
 // Scroll to section on link click
 
+menuLinks = document.getElementsByClassName("li__section");
+
+for (var menuLink of menuLinks) {
+  menuLink.addEventListener("click", function () {
+    scrollToSection(this);
+    showNavlinks(document.getElementById("navbar__container1"));
+    navbarAnimate(menuIcon);
+  });
+}
+
+// initialize first section as active when the page is loaded
+
+setAsActive(document.querySelector("#li__section1"));
+
 // Set sections as active
 
 window.addEventListener("scroll", function () {
@@ -153,5 +184,6 @@ window.addEventListener("scroll", function () {
     var scroll = window.scrollY;
     activeElement = getNearestSection(scroll, sectionList);
     setAsActive(activeElement);
+    setAsActive(document.querySelector("#li__" + activeElement.id));
   }, 150);
 });
