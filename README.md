@@ -2,8 +2,8 @@
 
 ## Table of Contents
 
-- [Project description](Project description)
-- [Project structure](Project structure)
+- Project description
+- Project structure
 
 ## Project description
 
