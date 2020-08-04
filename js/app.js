@@ -109,9 +109,18 @@ function createList(elementData, elementId, text) {
  */
 
 function setAsActive(element) {
-  const inactiveSection = document.getElementsByClassName("active");
-  if (inactiveSection.length > 0) {
-    inactiveSection[0].classList.toggle("active");
+  let inactiveSection;
+
+  if (element.hasAttribute("data-nav")) {
+    inactiveSection = document.querySelector("section.active");
+    inactiveSection.classList.toggle("active");
+  } else if (element.classList[0].includes("li__")) {
+    inactiveSection = document.getElementsByClassName("li__section active");
+    if (inactiveSection.length > 0) {
+      inactiveSection[0].classList.toggle("active");
+    }
+  } else {
+    return;
   }
   element.classList.toggle("active");
 }
@@ -163,7 +172,7 @@ menuIcon.addEventListener("click", function () {
 
 menuLinks = document.getElementsByClassName("li__section");
 
-for (var menuLink of menuLinks) {
+for (const menuLink of menuLinks) {
   menuLink.addEventListener("click", function () {
     scrollToSection(this);
     showNavlinks(document.getElementById("navbar__container1"));
@@ -181,7 +190,7 @@ window.addEventListener("scroll", function () {
   window.clearTimeout(isScrolling);
 
   isScrolling = setTimeout(function () {
-    var scroll = window.scrollY;
+    let scroll = window.scrollY;
     activeElement = getNearestSection(scroll, sectionList);
     setAsActive(activeElement);
     setAsActive(document.querySelector("#li__" + activeElement.id));
